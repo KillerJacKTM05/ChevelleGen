@@ -83,11 +83,25 @@ transform = transforms.Compose([
 ])
 
 data_path = './Chevelle'
+generator_path = 'generator.pth'
+discriminator_path = 'discriminator.pth'
 dataset = ImageFolder(root=data_path, transform=transform)
 dataloader = DataLoader(dataset, batch_size=64, shuffle=True)
 
 generator = Generator()
 discriminator = Discriminator()
+
+if os.path.exists(generator_path):
+    generator.load_state_dict(torch.load(generator_path))
+    print('Generator model loaded.')
+else:
+    print('generator either not existing or couldnt loaded.')
+    
+if os.path.exists(discriminator_path):
+    discriminator.load_state_dict(torch.load(discriminator_path))
+    print('Discriminator model loaded.')
+else:
+    print('discriminator either not existing or couldnt loaded.')
 
 # Loss and optimizers
 criterion = nn.BCELoss()
@@ -134,5 +148,6 @@ for epoch in range(num_epochs):
     print(f'Epoch [{epoch}/{num_epochs}], d_loss: {d_loss.item()}, g_loss: {g_loss.item()}')
  
 PlotGraph(g_losses, d_losses)
-torch.save(generator.state_dict(), 'generator.pth')
+torch.save(generator.state_dict(), generator_path)
+torch.save(discriminator.state_dict(), discriminator_path)
 print('Generator model saved.')
