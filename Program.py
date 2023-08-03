@@ -14,21 +14,22 @@ class Generator(nn.Module):
     def __init__(self):
         super(Generator, self).__init__()
         self.model = nn.Sequential(
-            nn.Linear(100, 512 * 20 * 20), # Adjust size here
-            nn.ReLU(),
-            nn.Unflatten(1, (512, 20, 20)), # Adjust channels and size here
-
+            nn.Linear(128, 512 * 20 * 20),
+            nn.BatchNorm1d(512 * 20 * 20),
+            nn.LeakyReLU(0.2),
+            nn.Unflatten(1, (512, 20, 20)),
             nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(256),
             nn.ReLU(),
             nn.ConvTranspose2d(256, 128, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(128),
             nn.ReLU(),
             nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.ConvTranspose2d(64, 3, kernel_size=4, stride=2, padding=1),
-
             nn.Tanh()
         )
-
 
     def forward(self, x):
         return self.model(x)

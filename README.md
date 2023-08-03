@@ -7,3 +7,6 @@ Proto versions of both training and generative files. 50 epoch with 320x320 trai
 ## Version 0.2
 Repeatable training feature added.
 100 epoch training result: AI is not learning from that database. (See performance figure)
+
+## Version 0.3
+Despite the changes and completely newer and bigger dataset, this work failed
